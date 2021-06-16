@@ -1,0 +1,5 @@
+import org.apache.spark._
+import org.apache.spark.graphx._
+
+// 此处仍然需要用到RDD来让一些例子正常运行
+import org.apache.spark.rdd.RDD
