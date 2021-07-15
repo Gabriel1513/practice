@@ -35,7 +35,7 @@ def get_alias_edge(self, t, v):
       normalized_probs = [float(u_prob)/norm_const for u_prob in unnormalized_probs]
       return create_alias_table(normalized_probs)
 
-  def preprocess_transition_probs(self):
+def preprocess_transition_probs(self):
       G = self.G
       alias_nodes = {}
       for node in G.nodes():
