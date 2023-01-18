@@ -3,3 +3,6 @@ FROM pg_class as c,pg_attribute as a where c.relname = '表名' and a.attrelid =
 
 select relname as tabname,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c 
 where  relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname
+
+#pyinstaller
+#https://www.jianshu.com/p/e00195d2ff36

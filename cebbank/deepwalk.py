@@ -16,7 +16,7 @@ def _simulate_walks(self, nodes, num_walks, walk_length,):
     for _ in range(num_walks):
         random.shuffle(nodes)
         for v in nodes:
-            walks.append(self.deepwalk_walk(alk_length=walk_length, start_node=v))
+            walks.append(self.deepwalk_walk(walk_length=walk_length, start_node=v))
     return walks
 
 results = Parallel(n_jobs=workers, verbose=verbose, )(

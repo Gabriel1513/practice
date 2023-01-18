@@ -1,0 +1,91 @@
+
+自动核数程序使用指南
+
+
+1.功能描述
+
+- 数据读取模块 read_doc
+- 数据整体情况汇总模块 check_column_consistency
+- 数据清洗模块 data_clean
+- 特征列数据一致检查模块 pre_check
+- 单索引核对数据模块 check_data_consistency
+- 多重索引核对数据模块 check_data_consistency_1
+
+2.主要参数描述
+
+- Hive数据表csv文件位置 org_file 例：billsign_org_file = ‘/data/fmp_odm_billsign_t.csv’
+- GP/高斯数据表csv文件位置 copy_file 例：billsign_copy_file
+- 数据表表名 table_name
+
+- 单索引列名 idx_col 例：idx_col = 'cust_id'
+— 需要核查的列清单 col_l 例： col_l = ['income_amt','amt_curr_year','amt_curr_month']
+
+- 多重索引列名 index_col_l 例：index_col_l = ['cust_id','biz_org_int','currency_cd']
+- 需要核查的列清单 confirmation_l 参考上面col_l
+
+3.使用流程
+
+1).在放置程序的文件夹创建data文件夹（或者程序里是final文件夹），将Hive和高斯数据csv文件放到data文件夹内
+2).将主要参数按需求和上面例子进行更新，例：假设文件名是fmp_odm_cust_info.csv,则billsign_org_file = ‘/data/fmp_odm_cust_info.csv’
+3).从上开始选中每个方框点run，即从import pandas as pd的方框开始依次选中
+4).跑summary函数，会返回billsign_org_data以及billsign_copy_data并显示两个csv数据的具体情况
+5).根据两个文档的列是否一致选取两个文档中一致以及要核查的列
+6).跑pre_check函数，会显示第一行数据中的特征是否一致，包括数据类型和数据是否一致，使用时请保证csv文档第一行数据是一致的，pre_check改进版本在附录中
+7).根据pre_check结果和数据列类型情况找出需要进行数据转换的列，使用data_clean进行数据转换，目前主要包括日期转换，nan值替换以及类型转换如int转float
+8).将数据清洗过后的数据billsign_org_data_converted,billsign_copy_data_converted再跑pre_check程序看特征一致状况
+9).更新单索引列名或者多重索引列名，以及核查清单参数，单索引一般可使用cust_id,多重索引可以参考脚本文档group by条件下的列
+10).跑check_data_consistency函数，会返回不一致的数据量inconsistency_amount以及inconsistency_l,多重索引函数改进版本在附录中
+
+
+4.函数描述
+
+- 数据读取模块 read_doc
+
+输入：billsign_org_file，billsign_copy_file
+输出：billsign_org_data，billsign_copy_data
+
+- 数据整体情况汇总模块 check_column_consistency
+
+输入：billsign_org_data，billsign_copy_data
+输出：显示两个核对文档的列名列表，列的差异，列的类型，以及数据量情况
+
+- 汇总模块 summary
+
+输入：billsign_org_data，billsign_copy_data, table_name
+主要封装上面两个模块
+
+- 数据清洗模块 data_clean
+
+输入：billsign_org_data，billsign_copy_data
+输出：billsign_org_data_converted，billsign_copy_data_converted
+
+#类型转换
+
+billsign_org_data_converted['income_amt'] = billsign_org_data_converted['income_amt'].astype(float)
+
+#nan值转换
+
+billsign_org_data_converted.fillna(0)
+
+#日期转换
+
+billsign_org_data_converted['curr_date_latest'] = billsign_org_data_converted['curr_date_latest'].apply(date_convert)
+
+
+- 特征列数据一致检查模块 pre_check
+
+输入：billsign_org_data_converted，billsign_copy_data_converted
+输出：数据第一行特征一致情况
+
+- 单索引核对数据模块 check_data_consistency
+
+输入：billsign_org_data_converted，billsign_copy_data_converted，idx_col, col_l
+输出：inconsistency_amount, inconsistency_amount
+
+- 多重索引核对数据模块 check_data_consistency_1
+
+输入：billsign_org_data_converted，billsign_copy_data_converted，index_col_l, confirmation_l
+输出：inconsistency_amount, inconsistency_amount
+
+
+5.附录

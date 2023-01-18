@@ -1,4 +1,6 @@
 
+import numpy as np
+
 #按概率抽样
 
 np.random.seed(0)
