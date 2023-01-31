@@ -21,4 +21,4 @@ jobs:
       - name: print context info
         run: echo "github.repo is ${{ github.repository }} "
              echo "github.token is ${{ github.token }} "
-        
+             echo "secrets is ${{ secrets.GITHUB_TOKEN }}"
