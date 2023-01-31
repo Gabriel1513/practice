@@ -11,10 +11,8 @@ jobs:
         run: echo "Hello world"
         
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         
       - name: test_hello
         uses: ./.github/actions/hello_world
-        with:
-          message: "test message"
         
