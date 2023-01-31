@@ -11,5 +11,5 @@ runs:
   using: "composite"
   steps:
     - name: print-message
-      run:  
-        echo "Here print the message ${{ inputs.message }} " 
+      run:  echo "Here print the message ${{ inputs.message }}"  
+      shell: bash
