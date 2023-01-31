@@ -17,4 +17,8 @@ jobs:
         uses: ./.github/actions/hello_world
         with:
           message: " test message"
+          
+      - name: print context info
+        run: echo "github.repo is ${{ github.repository }} "
+             echo "github.token is ${{ github.token }} "
         
