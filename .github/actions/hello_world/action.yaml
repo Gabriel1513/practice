@@ -1,0 +1,15 @@
+name: hello_world
+description: Prints a message passed from the workflow.
+
+inputs:       # <- keyword for defining action parameters.     
+  message:
+    required: true
+    description: "The message to be printed"
+    default: "This is the default message."
+    
+runs:
+  using: "composite"
+  steps:
+    - name: print-message
+    - run:  
+        echo "Here print the message ${{ inputs.message }} " 
