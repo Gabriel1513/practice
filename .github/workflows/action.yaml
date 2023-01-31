@@ -15,4 +15,6 @@ jobs:
         
       - name: test_hello
         uses: ./.github/actions/hello_world
+        with:
+          message: " test message"
         
