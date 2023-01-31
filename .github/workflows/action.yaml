@@ -2,11 +2,21 @@ name: 'Hello World'
 
 on: 
   push:
-    branch:
+    branches:
       main
       
 jobs:
   hello-world:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello world"
+      - name: hello
+        run: echo "Hello world"
+        
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: test_hello
+        uses: ./.github/actions/hello_world
+        with:
+          message: "test message"
+        
